@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css'; // Asegúrate de importar Bootstrap en tu archivo
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export const ItemCounter = ({ item, onAdd }) => {
   const [quantity, setQuantity] = useState(1);

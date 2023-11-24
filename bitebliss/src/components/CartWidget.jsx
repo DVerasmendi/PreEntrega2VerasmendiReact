@@ -12,9 +12,9 @@ export const CartWidget = () => {
   return (
     <>
       {/* Utiliza el componente Link y asigna la ruta a tu componente Cart.jsx */}
-      <Link to='/cart'>
+      <Link to='/cart' style={{ color: 'white', textDecoration: 'none' }}>
         <img src={cart} alt='Carrito de compras' width={30}/> 
-        <span>{totalQuantity}</span>
+        <span  className="link-style" >{totalQuantity}</span>
       </Link>
     </>
   );
