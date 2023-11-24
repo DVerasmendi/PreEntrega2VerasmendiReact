@@ -2,3 +2,14 @@
   color:white;
   padding-left: 1rem;
 }
+
+/* Estilos CSS con Bootstrap */
+.elegant-image {
+  border: 3px solid #fff; /* Borde blanco */
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Sombra */
+  transition: transform 0.3s ease; /* Efecto de transición */
+}
+
+.elegant-image:hover {
+  transform: scale(1.05); /* Escalado al pasar el mouse */
+}

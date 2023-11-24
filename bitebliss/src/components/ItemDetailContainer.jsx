@@ -1,39 +1,43 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 
-import { products } from '../data/products';
 import { ItemDetail } from './ItemDetail';
-import loadingGif from '../assets/loading.gif';  // Asegúrate de que la ruta sea correcta
+import loadingGif from '../assets/loading.gif';
 
-export const ItemDetailContainer =() =>{
-    const [item, setItem]=useState(null);
+export const ItemDetailContainer = () => {
+  const [itemData, setItemData] = useState(null);
+  const { id } = useParams();
 
-    const {id}=useParams();
+  useEffect(() => {
+    const fetchData = async () => {
+      const firestore = getFirestore();
+      const docRef = doc(firestore, 'products', id);
 
-    useEffect(()=>{
-        const mypromise=new Promise((resolve,reject)=> {
-        setTimeout(()=>{resolve(products);
-        },2000);
-        });
+      try {
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          setItemData({ id, ...data }); // Combine el ID con los datos del ítem
+        } else {
+          console.log('No such document!');
+        }
+      } catch (error) {
+        console.error('Error fetching document:', error);
+      }
+    };
 
-    mypromise.then((response)=>{
-    const findByID=response.find(
-        (item) =>item.id ===Number(id)
-    );
-    setItem(findByID);
+    fetchData();
+  }, [id]);
 
-    });
-    },[id]);
-
-    return (
-      <Container className='mt-4 text-center'>
-        {item ? (
-          <ItemDetail item={item} />
-        ) : (
-          <img src={loadingGif} alt='Loading...' width={60} />
-        )}
-      </Container>
-    );
-    
+  return (
+    <Container className='mt-4 text-center'>
+      {itemData ? (
+        <ItemDetail item={itemData} /> // Envía el objeto que contiene el ID y los datos del ítem
+      ) : (
+        <img src={loadingGif} alt='Loading...' width={60} />
+      )}
+    </Container>
+  );
 };

@@ -1,8 +1,9 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Container from 'react-bootstrap/Container';
+import { getFirestore, collection, getDocs, query, where } from 'firebase/firestore'; // Importa las funciones necesarias
 
-import { products } from '../data/products';
+
 import { ItemList } from './ItemList';
 import loadingGif from '../assets/loading.gif';
 
@@ -10,10 +11,9 @@ import loadingGif from '../assets/loading.gif';
 export const ItemListContainer = () => {
 const [items, setItems] = useState([]);
 const [loading, setLoading] = useState(true);
-
 const { id } = useParams();
 
-// Lógica para determinar el greeting según la categoría
+// Lógica para determinar el saludo según la categoría
 let greeting;
 if (id === 'cakes') {
 greeting = 'Pasteles';
@@ -25,26 +25,32 @@ greeting = 'Home';
 
 useEffect(() => {
 const fetchData = async () => {
+    setLoading(true);
+
+    // Configura Firestore
+    const db = getFirestore();
+
     try {
-    setLoading(true); // Inicia el estado de carga
+    let querySnapshot;
 
-    const response = await new Promise((resolve) => {
-        setTimeout(() => {
-        resolve(products);
-        }, 2000);
-    });
-
-    if (!id) {
-        setItems(response);
+    // Consulta los productos según la categoría o todos los productos
+    if (id) {
+        const q = query(collection(db, 'products'), where('categoryId', '==', id));
+        querySnapshot = await getDocs(q);
     } else {
-        const filterByCategory = response.filter((item) => item.category === id);
-        setItems(filterByCategory);
+        querySnapshot = await getDocs(collection(db, 'products'));
     }
 
-    setLoading(false); // Cambia el estado a false cuando la promesa se resuelve
+    const fetchedItems = [];
+    querySnapshot.forEach((doc) => {
+        fetchedItems.push({ id: doc.id, ...doc.data() });
+    });
+
+    setItems(fetchedItems);
+    setLoading(false);
     } catch (error) {
     console.error('Error al obtener datos:', error);
-    setLoading(false); // En caso de error, también cambia el estado a false
+    setLoading(false);
     }
 };
 
@@ -58,10 +64,9 @@ return (
     </Container>
     {loading ? (
     <Container className='mt-4 d-flex align-items-center justify-content-center'>
-    <img src={loadingGif} alt='Loading...' width={60}/>
+        <img src={loadingGif} alt='Loading...' width={60} />
     </Container>
     ) : (
-    // Muestra los productos cuando la promesa se resuelve
     <ItemList items={items} />
     )}
 </Container>

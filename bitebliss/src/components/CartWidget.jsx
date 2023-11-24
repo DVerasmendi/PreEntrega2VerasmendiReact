@@ -1,9 +1,21 @@
-import cart from '../assets/carrito.png'
+import React, { useContext } from 'react';
+import cart from '../assets/carrito.png';
+import { CartContext } from '../contexts/CartContext';
+import { Link } from 'react-router-dom'; // Importa el componente Link
 
-export const CartWidget =() =>{
-    return (
+export const CartWidget = () => {
+  const { items } = useContext(CartContext);
+
+  // Calcular el valor total de la cantidad de items
+  const totalQuantity = items.reduce((acc, item) => acc + item.quantity, 0);
+
+  return (
     <>
-    <img src={cart} alt='Carrito de compras' width={30}/> <span>0</span>
+      {/* Utiliza el componente Link y asigna la ruta a tu componente Cart.jsx */}
+      <Link to='/cart'>
+        <img src={cart} alt='Carrito de compras' width={30}/> 
+        <span>{totalQuantity}</span>
+      </Link>
     </>
-    );
+  );
 };
