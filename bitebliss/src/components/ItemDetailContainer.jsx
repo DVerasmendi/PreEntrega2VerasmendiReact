@@ -19,7 +19,7 @@ export const ItemDetailContainer = () => {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const data = docSnap.data();
-          setItemData({ id, ...data }); // Combine el ID con los datos del ítem
+          setItemData({ id, ...data });
         } else {
           console.log('No such document!');
         }
@@ -34,7 +34,7 @@ export const ItemDetailContainer = () => {
   return (
     <Container className='mt-4 text-center'>
       {itemData ? (
-        <ItemDetail item={itemData} /> // Envía el objeto que contiene el ID y los datos del ítem
+        <ItemDetail item={itemData} />
       ) : (
         <img src={loadingGif} alt='Loading...' width={60} />
       )}

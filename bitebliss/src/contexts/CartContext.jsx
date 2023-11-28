@@ -19,7 +19,7 @@ export const CartProvider = ({ children }) => {
         updatedItems[existingItemIndex].quantity = updatedQuantity;
       } else {
         updatedItems[existingItemIndex].quantity = item.stock;
-        console.log('No se puede agregar más stock del disponible.');
+        /*console.log('No se puede agregar más stock del disponible.');*/
         Swal.fire({
           icon: 'warning',
           title: '¡No hay suficiente stock!',
@@ -31,7 +31,7 @@ export const CartProvider = ({ children }) => {
         updatedItems.push({ ...item, quantity });
       } else {
         updatedItems.push({ ...item, quantity: item.stock });
-        console.log('No se puede agregar más stock del disponible.');
+        /*console.log('No se puede agregar más stock del disponible.');*/
         Swal.fire({
           icon: 'warning',
           title: '¡No hay suficiente stock!',

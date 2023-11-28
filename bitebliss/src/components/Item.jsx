@@ -22,6 +22,3 @@ export const Item=({item})=>{
 
 );
 }
-
-
-
