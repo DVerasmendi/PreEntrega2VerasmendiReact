@@ -26,7 +26,8 @@ Creación de Órdenes: Los clientes pueden realizar pedidos fácilmente y se gen
 Clona este proyecto
 
 ```bash
-  git clone https://github.com/tu-usuario/cake-cupcake-ecommerce.git
+  git clone https://github.com/DVerasmendi/ProyectoFinalVerasmendiReact.git
+            
 ```
 
 Ve al directorio del proyecto
